@@ -1,7 +1,11 @@
-# Out
-OUT = -o ./out/APLC
+#### Out
 
-# Flags
+OUT_DIR = ./out
+OUT_BIN = $(OUT_DIR)/APLC
+OUT = -o $(OUT_BIN)
+
+#### Flags
+
 # -Wall = Warn ALl
 FLAGS = -Wall
 
@@ -15,15 +19,15 @@ FILES = ./source/main.cpp
 build_and_run_main: clear build_main run_main
 
 build_main:
-	g++ $(FILES) $(OUT) $(CPPSTDV) $(FLAGS)
+	mkdir -p $(OUT_DIR)
+	g++ $(FILES) $(CPPSTDV) $(FLAGS) $(OUT)
 
 run_main: clear
-	./out/APLC my_app.a
+	$(OUT_BIN) my_app.a
 
 # Clears The Terminal
 clear:
 	clear
 
-# Cleans Outs
 clean:
-	rm ./out/*
+	rm -f $(OUT_BIN)
