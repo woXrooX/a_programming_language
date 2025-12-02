@@ -23,7 +23,7 @@ build_main:
 	g++ $(FILES) $(CPPSTDV) $(FLAGS) $(OUT)
 
 run_main: clear
-	$(OUT_BIN) my_app.a
+	$(OUT_BIN) ./out/my_app.a
 
 # Clears The Terminal
 clear:
