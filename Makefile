@@ -18,7 +18,7 @@ build_main:
 	g++ $(FILES) $(OUT) $(CPPSTDV) $(FLAGS)
 
 run_main: clear
-	./out/APLC
+	./out/APLC my_app.a
 
 # Clears The Terminal
 clear:
