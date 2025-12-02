@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include "helpers.hpp"
+
 int main(int argc, char** argv) {
 	// Simple argument handling:
 	// APL = a programming language
@@ -13,8 +15,7 @@ int main(int argc, char** argv) {
 	}
 
 	std::string input_path = argv[1];
-
-	std::cout << "APLC: compiling " << input_path << "\n";
+	std::string input_string = woXrooX::read_file(input_path);
 
 	return 0;
 }
