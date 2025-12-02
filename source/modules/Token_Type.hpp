@@ -1,9 +1,9 @@
-#ifndef TOKEN_TYPES_HPP
-#define TOKEN_TYPES_HPP
+#ifndef TOKEN_TYPE_HPP
+#define TOKEN_TYPE_HPP
 
 namespace woXrooX {
 
-	enum class Token_Types {
+	enum class Token_Type {
 		// Special
 
 		end_of_file,
