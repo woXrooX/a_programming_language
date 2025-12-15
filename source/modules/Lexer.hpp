@@ -49,6 +49,20 @@ namespace woXrooX {
 					continue;
 				}
 
+				if (
+					c >= '0' &&
+					c <= '9'
+				) {
+					Token token = this->integer_literal(
+						start_line,
+						start_column,
+						c
+					);
+
+					tokens.push_back(token);
+					continue;
+				}
+
 				// For now, everything else is an error until we implement more cases
 				std::cerr
 					<< "APLC: lexer: unexpected character '"
@@ -168,10 +182,10 @@ namespace woXrooX {
 		Token identifier_or_keyword(
 			std::size_t start_line,
 			std::size_t start_column,
-			char first_char
+			char first_character
 		) {
 			std::string lexeme;
-			lexeme.push_back(first_char);
+			lexeme.push_back(first_character);
 
 			// Consume [a-zA-Z0-9_]* after the first character
 			while (!this->is_at_end()) {
@@ -199,6 +213,33 @@ namespace woXrooX {
 
 			return Token(
 				token_type,
+				lexeme,
+				start_line,
+				start_column
+			);
+		}
+
+		Token integer_literal(
+			std::size_t start_line,
+			std::size_t start_column,
+			char first_character
+		) {
+			std::string lexeme;
+			lexeme.push_back(first_character);
+
+			while (!this->is_at_end()) {
+				char c = this->peek();
+
+				if (
+					c >= '0' &&
+					c <= '9'
+				) lexeme.push_back(this->advance());
+
+				else break;
+			}
+
+			return Token(
+				Token_Type::integer_literal,
 				lexeme,
 				start_line,
 				start_column
