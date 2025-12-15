@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
 
 	woXrooX::Lexer lexer(input_string);
 	std::vector<woXrooX::Token> tokens = lexer.tokenize();
+	std::cout << "Token count: " << tokens.size() << "\n";
 
 	return 0;
 }
