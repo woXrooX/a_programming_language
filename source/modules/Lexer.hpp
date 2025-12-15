@@ -22,7 +22,6 @@ namespace woXrooX {
 		std::vector<Token> tokenize() {
 			std::vector<Token> tokens;
 
-			// Temporary stub: just emit an EOF token so things compile & run.
 			tokens.emplace_back(
 				Token_Type::end_of_file,
 				"",
