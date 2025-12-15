@@ -49,6 +49,7 @@ namespace woXrooX {
 					continue;
 				}
 
+				// Integer literal
 				if (
 					c >= '0' &&
 					c <= '9'
@@ -60,6 +61,69 @@ namespace woXrooX {
 					);
 
 					tokens.push_back(token);
+					continue;
+				}
+
+
+				// Punctuation tokens
+
+				if (c == '(') {
+					tokens.emplace_back(
+						Token_Type::left_parenthesis,
+						"(",
+						start_line,
+						start_column
+					);
+					continue;
+				}
+
+				if (c == ')') {
+					tokens.emplace_back(
+						Token_Type::right_parenthesis,
+						")",
+						start_line,
+						start_column
+					);
+					continue;
+				}
+
+				if (c == '{') {
+					tokens.emplace_back(
+						Token_Type::left_curly_brace,
+						"{",
+						start_line,
+						start_column
+					);
+					continue;
+				}
+
+				if (c == '}') {
+					tokens.emplace_back(
+						Token_Type::right_curly_brace,
+						"}",
+						start_line,
+						start_column
+					);
+					continue;
+				}
+
+				if (c == ';') {
+					tokens.emplace_back(
+						Token_Type::semicolon,
+						";",
+						start_line,
+						start_column
+					);
+					continue;
+				}
+
+				if (c == ',') {
+					tokens.emplace_back(
+						Token_Type::comma,
+						",",
+						start_line,
+						start_column
+					);
 					continue;
 				}
 
