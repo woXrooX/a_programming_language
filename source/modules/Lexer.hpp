@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "Token.hpp"
 
@@ -22,13 +23,51 @@ namespace woXrooX {
 		std::vector<Token> tokenize() {
 			std::vector<Token> tokens;
 
-			this->skip_whitespace_and_comments();
+			while (!this->is_at_end()) {
+				this->skip_whitespace_and_comments();
 
+				if (this->is_at_end()) break;
+
+				std::size_t start_line = this->line;
+				std::size_t start_column = this->column;
+
+				char c = this->advance();
+
+				// Identifiers & keywords
+				if (
+					(c >= 'a' && c <= 'z') ||
+					(c >= 'A' && c <= 'Z') ||
+					c == '_'
+				) {
+					Token token = this->identifier_or_keyword(
+						start_line,
+						start_column,
+						c
+					);
+
+					tokens.push_back(token);
+					continue;
+				}
+
+				// For now, everything else is an error until we implement more cases
+				std::cerr
+					<< "APLC: lexer: unexpected character '"
+					<< c
+					<< "' @ "
+					<< start_line
+					<< ':'
+					<< start_column
+					<< '\n';
+
+				break;
+			}
+
+			// Always add EOF token at the end
 			tokens.emplace_back(
 				Token_Type::end_of_file,
 				"",
-				line,
-				column
+				this->line,
+				this->column
 			);
 
 			return tokens;
@@ -124,6 +163,46 @@ namespace woXrooX {
 				// If it's not whitespace or comment start, we're done
 				return;
 			}
+		}
+
+		Token identifier_or_keyword(
+			std::size_t start_line,
+			std::size_t start_column,
+			char first_char
+		) {
+			std::string lexeme;
+			lexeme.push_back(first_char);
+
+			// Consume [a-zA-Z0-9_]* after the first character
+			while (!this->is_at_end()) {
+				char c = this->peek();
+
+				if (
+					(c >= 'a' && c <= 'z') ||
+					(c >= 'A' && c <= 'Z') ||
+					(c >= '0' && c <= '9') ||
+					c == '_'
+				) lexeme.push_back(this->advance());
+
+				else break;
+			}
+
+			// Decide if this lexeme is a keyword or identifier
+			Token_Type token_type = Token_Type::identifier;
+
+			if (lexeme == "int") token_type = Token_Type::keyword_int;
+			else if (lexeme == "bool") token_type = Token_Type::keyword_bool;
+			else if (lexeme == "if") token_type = Token_Type::keyword_if;
+			else if (lexeme == "else") token_type = Token_Type::keyword_else;
+			else if (lexeme == "while") token_type = Token_Type::keyword_while;
+			else if (lexeme == "return") token_type = Token_Type::keyword_return;
+
+			return Token(
+				token_type,
+				lexeme,
+				start_line,
+				start_column
+			);
 		}
 	};
 }
