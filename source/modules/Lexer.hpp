@@ -37,8 +37,43 @@ namespace woXrooX {
 		std::size_t index;
 		std::size_t line;
 		std::size_t column;
-	};
 
+		// Past the end of the source?
+		bool is_at_end() const {
+			return index >= source.size();
+		}
+
+		// Look at the current character without moving
+		char peek() const {
+			// sentinel: "no more characters"
+			if (is_at_end()) return '\0';
+
+			return source[index];
+		}
+
+		// Look at the current character without moving.
+		char peek_next() const {
+			if (index + 1 >= source.size()) return '\0';
+
+			return source[index + 1];
+		}
+
+		// Consume the current character, move index, update line/column, and return that character
+		char advance() {
+			if (is_at_end()) return '\0';
+
+			char c = source[index++];
+
+			if (c == '\n') {
+				++line;
+				column = 1;
+			}
+
+			else ++column;
+
+			return c;
+		}
+	};
 }
 
 #endif
