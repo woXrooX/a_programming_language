@@ -12,16 +12,14 @@ int main(int argc, char** argv) {
 	// ./APLC input.a
 
 	if (argc != 2) {
-		std::cerr << "Usage: APLC <input file>\n";
+		std::cerr << "Usage: APLC <input_path_and_file>\n";
 		return 1;
 	}
 
-	std::string input_path = argv[1];
-	std::string input_string = woXrooX::read_file(input_path);
+	std::string input_string = woXrooX::read_file(argv[1]);
 
 	woXrooX::Lexer lexer(input_string);
 	std::vector<woXrooX::Token> tokens = lexer.tokenize();
-	std::cout << "Token count: " << tokens.size() << "\n";
 
 	return 0;
 }
