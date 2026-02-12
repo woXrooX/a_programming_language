@@ -57,11 +57,11 @@ namespace woXrooX {
 		}
 
 	private:
-		std::vector<Token> tokens;
 		const std::string& source;
 		std::size_t index;
 		std::size_t line;
 		std::size_t column;
+		std::vector<Token> tokens;
 
 
 		/////////// Helpers
@@ -79,7 +79,7 @@ namespace woXrooX {
 			return this->source[this->index];
 		}
 
-		// Look at the current character without moving.
+		// Look at the next character without moving.
 		char peek_next() const {
 			if (this->index + 1 >= this->source.size()) return '\0';
 
@@ -435,16 +435,14 @@ namespace woXrooX {
 		void dump_tokens() const {
 			std::cout << "---- TOKEN DUMP ----\n";
 
+			std::cout << "Token count: " << this->tokens.size() << "\n\n";
+
 			for (const Token& token : this->tokens) {
 				std::cout
-					<< token.line
-					<< ':'
-					<< token.column
-					<< "  "
-					<< this->token_type_to_string(token.type)
-					<< "  \""
-					<< token.lexeme
-					<< "\"\n";
+					<< token.line << ':' << token.column << ' '
+					<< this->token_type_to_string(token.type) << ' '
+					<< '"' << token.lexeme << '"'
+					<< '\n';
 			}
 
 			std::cout << "--------------------\n";
