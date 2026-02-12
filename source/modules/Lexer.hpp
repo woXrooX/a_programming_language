@@ -21,17 +21,15 @@ namespace woXrooX {
 		{}
 
 		std::vector<Token> tokenize() {
-			std::vector<Token> tokens;
-
 			while (this->is_at_end() == false) {
 				this->skip_whitespace_and_comments();
 
 				if (this->is_at_end()) break;
 
-				if (this->try_identifier_or_keyword(tokens) == true) continue;
-				if (this->try_integer_literal(tokens) == true) continue;
-				if (this->try_operator(tokens) == true) continue;
-				if (this->try_punctuation(tokens) == true) continue;
+				if (this->try_identifier_or_keyword() == true) continue;
+				if (this->try_integer_literal() == true) continue;
+				if (this->try_operator() == true) continue;
+				if (this->try_punctuation() == true) continue;
 
 				std::cerr
 					<< "APLC: lexer: unexpected character '"
@@ -46,19 +44,20 @@ namespace woXrooX {
 			}
 
 			// Always add EOF token at the end
-			tokens.emplace_back(
+			this->tokens.emplace_back(
 				Token_Type::end_of_file,
 				"",
 				this->line,
 				this->column
 			);
 
-			this->dump_tokens(tokens);
+			this->dump_tokens();
 
-			return tokens;
+			return this->tokens;
 		}
 
 	private:
+		std::vector<Token> tokens;
 		const std::string& source;
 		std::size_t index;
 		std::size_t line;
@@ -164,7 +163,7 @@ namespace woXrooX {
 
 		/////////// Handlers
 
-		bool try_identifier_or_keyword(std::vector<Token>& tokens) {
+		bool try_identifier_or_keyword() {
 			char current_character = this->peek();
 
 			// First character must be [a-zA-Z_]
@@ -209,12 +208,12 @@ namespace woXrooX {
 			else if (lexeme == "while") token_type = Token_Type::keyword_while;
 			else if (lexeme == "return") token_type = Token_Type::keyword_return;
 
-			tokens.emplace_back(token_type, lexeme, start_line, start_column);
+			this->tokens.emplace_back(token_type, lexeme, start_line, start_column);
 
 			return true;
 		}
 
-		bool try_integer_literal(std::vector<Token>& tokens) {
+		bool try_integer_literal() {
 			char current_character = this->peek();
 
 			// First character must be [0-9]
@@ -245,7 +244,7 @@ namespace woXrooX {
 					break;
 				}
 
-				tokens.emplace_back(Token_Type::integer_literal, lexeme, start_line, start_column);
+				this->tokens.emplace_back(Token_Type::integer_literal, lexeme, start_line, start_column);
 
 				return true;
 			}
@@ -253,7 +252,7 @@ namespace woXrooX {
 			return false;
 		}
 
-		bool try_operator(std::vector<Token>& tokens) {
+		bool try_operator() {
 			char current_character = this->peek();
 
 			std::size_t start_line = this->line;
@@ -263,25 +262,25 @@ namespace woXrooX {
 
 			if (current_character == '+') {
 				this->advance();
-				tokens.emplace_back(Token_Type::plus, "+", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::plus, "+", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == '-') {
 				this->advance();
-				tokens.emplace_back(Token_Type::minus, "-", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::minus, "-", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == '*') {
 				this->advance();
-				tokens.emplace_back(Token_Type::star, "*", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::star, "*", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == '/') {
 				this->advance();
-				tokens.emplace_back(Token_Type::forward_slash, "/", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::forward_slash, "/", start_line, start_column);
 				return true;
 			}
 
@@ -290,29 +289,29 @@ namespace woXrooX {
 
 			if (current_character == '=') {
 				this->advance();
-				if (this->match_next_character('=') == true) tokens.emplace_back(Token_Type::equal_equal, "==", start_line, start_column);
-				else tokens.emplace_back(Token_Type::equal, "=", start_line, start_column);
+				if (this->match_next_character('=') == true) this->tokens.emplace_back(Token_Type::equal_equal, "==", start_line, start_column);
+				else this->tokens.emplace_back(Token_Type::equal, "=", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == '!') {
 				this->advance();
-				if (this->match_next_character('=') == true) tokens.emplace_back(Token_Type::bang_equal, "!=", start_line, start_column);
-				else tokens.emplace_back(Token_Type::bang, "!", start_line, start_column);
+				if (this->match_next_character('=') == true) this->tokens.emplace_back(Token_Type::bang_equal, "!=", start_line, start_column);
+				else this->tokens.emplace_back(Token_Type::bang, "!", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == '<') {
 				this->advance();
-				if (this->match_next_character('=') == true) tokens.emplace_back(Token_Type::less_equal, "<=", start_line, start_column);
-				else tokens.emplace_back(Token_Type::less, "<", start_line, start_column);
+				if (this->match_next_character('=') == true) this->tokens.emplace_back(Token_Type::less_equal, "<=", start_line, start_column);
+				else this->tokens.emplace_back(Token_Type::less, "<", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == '>') {
 				this->advance();
-				if (this->match_next_character('=') == true) tokens.emplace_back(Token_Type::greater_equal, ">=", start_line, start_column);
-				else tokens.emplace_back(Token_Type::greater, ">", start_line, start_column);
+				if (this->match_next_character('=') == true) this->tokens.emplace_back(Token_Type::greater_equal, ">=", start_line, start_column);
+				else this->tokens.emplace_back(Token_Type::greater, ">", start_line, start_column);
 				return true;
 			}
 
@@ -326,7 +325,7 @@ namespace woXrooX {
 			) {
 				this->advance();
 				this->advance();
-				tokens.emplace_back(Token_Type::and_and, "&&", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::and_and, "&&", start_line, start_column);
 				return true;
 			}
 
@@ -336,53 +335,53 @@ namespace woXrooX {
 			) {
 				this->advance();
 				this->advance();
-				tokens.emplace_back(Token_Type::or_or, "||", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::or_or, "||", start_line, start_column);
 				return true;
 			}
 
 			return false;
 		}
 
-		bool try_punctuation(std::vector<Token>& tokens) {
+		bool try_punctuation() {
 			char current_character = this->peek();
 			std::size_t start_line = this->line;
 			std::size_t start_column = this->column;
 
 			if (current_character == '(') {
 				this->advance();
-				tokens.emplace_back(Token_Type::left_parenthesis, "(", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::left_parenthesis, "(", start_line, start_column);
 
 				return true;
 			}
 
 			if (current_character == ')') {
 				this->advance();
-				tokens.emplace_back(Token_Type::right_parenthesis, ")", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::right_parenthesis, ")", start_line, start_column);
 
 				return true;
 			}
 
 			if (current_character == '{') {
 				this->advance();
-				tokens.emplace_back(Token_Type::left_curly_brace, "{", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::left_curly_brace, "{", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == '}') {
 				this->advance();
-				tokens.emplace_back(Token_Type::right_curly_brace, "}", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::right_curly_brace, "}", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == ';') {
 				this->advance();
-				tokens.emplace_back(Token_Type::semicolon, ";", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::semicolon, ";", start_line, start_column);
 				return true;
 			}
 
 			if (current_character == ',') {
 				this->advance();
-				tokens.emplace_back(Token_Type::comma, ",", start_line, start_column);
+				this->tokens.emplace_back(Token_Type::comma, ",", start_line, start_column);
 				return true;
 			}
 
@@ -433,10 +432,10 @@ namespace woXrooX {
 			return "unknown_token_type";
 		}
 
-		void dump_tokens(const std::vector<Token>& tokens) const {
+		void dump_tokens() const {
 			std::cout << "---- TOKEN DUMP ----\n";
 
-			for (const Token& token : tokens) {
+			for (const Token& token : this->tokens) {
 				std::cout
 					<< token.line
 					<< ':'
