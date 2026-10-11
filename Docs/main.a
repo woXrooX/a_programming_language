@@ -1,69 +1,102 @@
-//// If-else statement
-void check_value(int x) {
-	if (x > 10) print("Value is greater than 10\n")
-	else if (x == 10) print("Value is exactly 10\n")
-	else print("Value is less than 10\n")
-}
+// Single-line comment
 
-// Loop, we only will have this syntax. We will not have for, while loops
 /*
-	loop (expression) execution
+	Multi-line comment
 */
-void print_numbers(int count) {
-	int i = 0
-	loop (i < count) {
-		i = i + 1
-		printf(f"{i}\n")
-	}
-}
 
 
-//// Basic function definition with traditional C syntax
-int calculate_fibonacci(int n) {
-	if (n <= 1) {
-		return n
-	}
+//// Class
 
-	return calculate_fibonacci(n - 1) + calculate_fibonacci(n - 2)
-}
-
-//// Main function entry point
-int main() {
-	int result = calculate_fibonacci(10)
-	print(f"Fibonacci(10) = {result}\n")
-
-	return 0
-}
-
-
-// Simple class definition
 class Point {
-	// Member variables
+	// Fields
 	int x
 	int y
 
-	// Constructor
-	void Point(int x_val, int y_val) {
-		this.x = x_val
-		this.y = y_val
+	// Constructor: reserved word, no return type, one per class
+	// Parameters with defaults must come last
+	constructor(int x = 0, int y = 0) {
+		this.x = x
+		this.y = y
 	}
 
 	// Method
-	int distance_from_origin() {
-		return sqrt(x*x + y*y)
+	int sum() {
+		return this.x + this.y
 	}
 }
 
-// Basic class
-class Animal {
-	int age
 
-	// Constructor
-	void Animal(int age) {
-		this.age = age
+//// Function
+
+int add(int a, int b) {
+	return a + b
+}
+
+
+//// Entry point
+
+int main() {
+	// Variables
+	int count = 3
+	bool is_ready = true
+	char letter = 'a'
+
+	// Assignment
+	count = count + 1
+
+	// Operators
+	int math = (1 + 2) * 3 - 4 / 2
+	bool check = (count >= 3 && count != 10) || !is_ready
+
+	// Strings
+	print("plain string\n")
+	print(f"formatted string: {count}\n")
+
+	// If / else: braces optional for a single statement
+	if (count > 3) print("big\n")
+	else if (count == 3) print("three\n")
+	else print("small\n")
+
+	// If / else: braces required for multiple statements
+	if (is_ready) {
+		count = count + 1
+		print("ready\n")
+	}
+	else {
+		count = 0
+		print("not ready\n")
 	}
 
-	int get_age() {
-		return this.age
+	// Loop: the only loop. Repeats while the expression is true.
+	int i = 0
+	loop (i < count) {
+		i = i + 1
+
+		// Skip to the next iteration
+		if (i == 2) continue
+
+		// Exit the loop
+		if (i == 4) break
+
+		print(f"{i}\n")
 	}
+
+	// Loop: braces optional for a single statement
+	int j = 0
+	loop (j < 3) j = j + 1
+
+	// Function call
+	int total = add(2, 3)
+
+	// Object creation
+	Point origin = new Point()
+	Point point = new Point(3, 4)
+
+	// Named arguments: positional first, named after
+	Point only_y = new Point(y = 5)
+
+	// Method call
+	print(f"{point.sum()}\n")
+
+	return 0
 }
