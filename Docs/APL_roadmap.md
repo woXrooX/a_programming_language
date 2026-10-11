@@ -42,7 +42,7 @@
 ## Stage 3: APL-0 compiler
 
 - **Written in:** Stage 2 assembly
-- **Compiles:** a tiny C-like subset of APL: integers, pointers, functions, `if`/`while`, globals
+- **Compiles:** a tiny C-like subset of APL: integers, pointers, functions, `if`/`loop`, globals
 - **Output:** Stage 2 assembly text
 - **Decide on paper first:**
   - the APL-0 grammar
