@@ -36,4 +36,16 @@ No external toolchains — the entire chain (compiler → language → OS) is se
 
 ## Design Notes
 
+Guiding principle: one way to do each thing. See `Docs/main.a` for the target syntax.
+
+- **Statements:** a newline ends a statement. No `;` anywhere. One statement per line.
+- **Braces:** optional when an `if`, `else` or `loop` body is a single statement, required when it has several.
+- **Loops:** `loop (condition)` is the only loop. No `for`, no `while`. `break` and `continue` are supported.
+- **Strings:** two forms, plain `"..."` and formatted `f"..."`.
+- **Classes:** the constructor is the reserved word `constructor`, with no return type and one per class. Fields are always accessed through `this.`.
+- **Objects:** created with `new`, e.g. `new Point(3, 4)`.
+- **Default arguments:** `constructor(int x = 0, int y = 0)`. Parameters with defaults must come last.
+- **Named arguments:** `new Point(y = 5)`. Positional arguments first, named after.
+- **No overloading:** each name maps to exactly one function. No name mangling; symbols use a plain prefix such as `Point_sum`. (May be revisited.)
+
 *(Add decisions, syntax examples, and design rationale here as the project evolves.)*
