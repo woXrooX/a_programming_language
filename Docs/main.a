@@ -5,20 +5,16 @@ void check_value(int x) {
 	else print("Value is less than 10\n")
 }
 
-// While loop
-void count_down(int start) {
-	int i = start
-	while (i > 0) {
-		print(f"{i}\n", i)
-		i = i - 1
-	}
-
-	print("Liftoff!\n")
-}
-
-// For loop
+// Loop, we only will have this syntax. We will not have for, while loops
+/*
+	loop (expression) execution
+*/
 void print_numbers(int count) {
-	for (int i = 0; i < count; i = i + 1) printf(f"{i}\n")
+	int i = 0
+	loop (i < count) {
+		i = i + 1
+		printf(f"{i}\n")
+	}
 }
 
 
