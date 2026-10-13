@@ -36,7 +36,12 @@ No external toolchains — the entire chain (compiler → language → OS) is se
 
 ## Design Notes
 
-Guiding principle: one way to do each thing. See `Docs/main.a` for the target syntax.
+Guiding principles:
+
+- **One way to do each thing.** No two constructs for the same job.
+- **Do one thing and do it well.** Every construct, keyword and function has a single, focused purpose.
+
+See `Docs/main.a` for the target syntax.
 
 - **Statements:** a newline ends a statement. No `;` anywhere. One statement per line.
 - **Braces:** optional when an `if`, `else` or `loop` body is a single statement, required when it has several.
